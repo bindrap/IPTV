@@ -1,0 +1,34 @@
+services:
+  xteve:
+    image: dnsforge/xteve:latest
+    container_name: xteve
+    ports:
+      - "34400:34400"
+    environment:
+      - TZ=UTC
+    volumes:
+      - ./data/xteve:/home/xteve/conf
+    restart: unless-stopped
+
+  app:
+    build:
+      context: ./backend
+    container_name: iptv-web
+    ports:
+      - "8080:8080"
+    environment:
+      # Use the IPTV-org community playlist by default. Override to use your own or xTeVe.
+      - PLAYLIST_URL=https://iptv-org.github.io/iptv/index.m3u
+      # Set to true to allow insecure TLS (self-signed/mismatched certs) when fetching streams.
+      - ALLOW_INSECURE=true
+    volumes:
+      - ./public:/usr/src/app/public:ro
+    depends_on:
+      - xteve
+    restart: unless-stopped
+    network_mode: bridge
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+      - 1.1.1.1
+      - 1.0.0.1
