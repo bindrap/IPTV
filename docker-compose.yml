@@ -21,6 +21,8 @@ services:
       - PLAYLIST_URL=https://iptv-org.github.io/iptv/index.m3u
       # Set to true to allow insecure TLS (self-signed/mismatched certs) when fetching streams.
       - ALLOW_INSECURE=true
+      # Required for on-demand search/resolution (TMDB bearer token)
+      - TMDB_TOKEN=${TMDB_TOKEN:-}
     volumes:
       - ./public:/usr/src/app/public:ro
     depends_on:

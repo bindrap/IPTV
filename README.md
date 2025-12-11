@@ -85,6 +85,13 @@ Your selection is saved and will load automatically next time!
 - **Filter by Category**: Use the dropdown to show specific channel groups
 - **Play**: Click any channel card to start streaming
 
+### On-Demand (Movies/TV/Anime)
+
+- **Movies/TV** use a built-in VidSrc scraper in the backend (no extra tools needed in Docker)
+- **Anime** uses `ani-cli` in debug mode; the Docker image installs it with its dependencies
+- Set `TMDB_TOKEN` in your environment (or `.env`) so lookups can resolve titles to streams
+- You can also paste a direct m3u8/mp4 URL if a resolver is unavailable
+
 ## 🏗️ Architecture
 
 ```

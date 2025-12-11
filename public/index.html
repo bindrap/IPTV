@@ -69,6 +69,33 @@
         text-transform: uppercase;
       }
 
+      .nav-tabs {
+        display: flex;
+        gap: 24px;
+        margin-left: 40px;
+      }
+
+      .nav-tab {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 8px 0;
+        transition: color 0.2s ease;
+        border-bottom: 2px solid transparent;
+      }
+
+      .nav-tab:hover {
+        color: var(--text);
+      }
+
+      .nav-tab.active {
+        color: var(--text);
+        border-bottom-color: var(--accent);
+      }
+
       .header-info {
         display: flex;
         align-items: center;
@@ -85,6 +112,79 @@
         border: 1px solid rgba(229, 9, 20, 0.3);
         text-transform: uppercase;
         letter-spacing: 0.5px;
+      }
+
+      .badge.soft {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px dashed rgba(255, 255, 255, 0.2);
+        color: var(--text);
+      }
+
+      .mini-input {
+        background: var(--card-bg);
+        border: 1px solid #333;
+        color: var(--text);
+        padding: 8px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        min-width: 200px;
+        width: 100%;
+      }
+
+      .compact-actions {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      #toast-container {
+        position: fixed;
+        top: 90px;
+        right: 20px;
+        z-index: 3000;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .toast {
+        background: rgba(0, 0, 0, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--text);
+        padding: 10px 14px;
+        border-radius: 6px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+        font-size: 13px;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0,0,0,0);
+        border: 0;
+      }
+
+      @media (max-width: 768px) {
+        .mini-input {
+          min-width: 140px;
+        }
+        .vod-controls input,
+        .vod-controls select,
+        .vod-inline input {
+          flex: 1 1 140px;
+        }
+        .compact-actions {
+          gap: 6px;
+        }
+        header {
+          padding: 12px 4%;
+        }
+        .logo-text {
+          font-size: 20px;
+        }
       }
 
       /* Hero video player section */
@@ -183,7 +283,74 @@
         max-width: 1200px;
       }
 
+      .vod-controls {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+        width: 100%;
+      }
+
+      .vod-inline {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+
+      .vod-inline-field {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        max-width: 220px;
+      }
+
+      .vod-hints {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+
+      .vod-log {
+        background: var(--card-bg);
+        border: 1px solid #222;
+        border-radius: 8px;
+        padding: 14px;
+        min-height: 80px;
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+
+      .vod-log-entry {
+        margin-bottom: 6px;
+      }
+
+      .vod-log-entry:first-child {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .status-pill {
+        background: rgba(255, 255, 255, 0.08);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 13px;
+        color: var(--text);
+      }
+
+      .status-pill[data-tone="error"] {
+        background: rgba(229, 9, 20, 0.18);
+        color: var(--accent);
+      }
+
+      .status-pill[data-tone="info"] {
+        background: rgba(255, 255, 255, 0.14);
+      }
+
       input[type="text"],
+      input[type="number"],
       select {
         background: var(--card-bg);
         border: 1px solid #333;
@@ -197,6 +364,7 @@
       }
 
       input[type="text"]:focus,
+      input[type="number"]:focus,
       select:focus {
         outline: none;
         border-color: var(--text);
@@ -240,10 +408,179 @@
         position: relative;
       }
 
-      .channel-card:hover {
+      .channel-card:hover, .media-card:hover {
         transform: scale(1.08);
         box-shadow: 0 8px 24px rgba(0,0,0,0.6);
         z-index: 10;
+      }
+
+      .media-card {
+        background: var(--card-bg);
+        border-radius: 8px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+      }
+
+      .media-card.active {
+        outline: 3px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      .media-poster {
+        width: 100%;
+        aspect-ratio: 2/3;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .media-poster img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .media-rating {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #ffd700;
+      }
+
+      .media-info {
+        padding: 12px;
+      }
+
+      .media-title {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .media-year {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .content-view {
+        display: none;
+      }
+
+      .content-view.active {
+        display: block;
+      }
+
+      .media-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 20px;
+      }
+
+      .player-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .player-modal.active {
+        display: flex;
+      }
+
+      .player-container {
+        width: 90%;
+        max-width: 1200px;
+        background: var(--bg-darker);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .player-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+        background: var(--card-bg);
+        border-bottom: 1px solid #333;
+      }
+
+      .player-title {
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .player-close {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        font-size: 32px;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s ease;
+      }
+
+      .player-close:hover {
+        color: var(--text);
+      }
+
+      .player-iframe {
+        width: 100%;
+        height: 600px;
+        border: none;
+      }
+
+      .episode-selector {
+        padding: 20px;
+        background: var(--card-bg);
+        border-top: 1px solid #333;
+      }
+
+      .episode-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .episode-btn {
+        background: var(--bg-dark);
+        border: 1px solid #333;
+        color: var(--text);
+        padding: 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: all 0.2s ease;
+      }
+
+      .episode-btn:hover {
+        background: var(--card-hover);
+        border-color: var(--accent);
+      }
+
+      .episode-btn.active {
+        background: var(--accent);
+        border-color: var(--accent);
       }
 
       .channel-card.active {
@@ -523,6 +860,12 @@
     <header id="header">
       <div class="logo">
         <div class="logo-text">Parteek's TV</div>
+        <nav class="nav-tabs">
+          <button class="nav-tab active" data-tab="livetv">Live TV</button>
+          <button class="nav-tab" data-tab="movies">Movies</button>
+          <button class="nav-tab" data-tab="tvshows">TV Shows</button>
+          <button class="nav-tab" data-tab="anime">Anime</button>
+        </nav>
       </div>
       <div class="header-info">
         <button class="settings-btn" id="settings-btn">⚙ Playlist Settings</button>
@@ -539,6 +882,17 @@
         </div>
 
         <div class="form-group">
+          <label class="form-label">MAC Address (sm4k.688.org)</label>
+          <input
+            type="text"
+            class="form-input"
+            id="mac-address-input"
+            placeholder="00:1A:2B:3C:4D:5E or 001A2B3C4D5E"
+          />
+          <div class="form-hint">Enter your MAC address to connect to sm4k.688.org. Leave blank to use custom playlist below.</div>
+        </div>
+
+        <div class="form-group">
           <label class="form-label">Custom Playlist URL</label>
           <input
             type="text"
@@ -546,7 +900,7 @@
             id="playlist-url-input"
             placeholder="https://example.com/playlist.m3u"
           />
-          <div class="form-hint">Enter a valid M3U or M3U8 playlist URL</div>
+          <div class="form-hint">Enter a valid M3U or M3U8 playlist URL (ignored if MAC address is provided)</div>
         </div>
 
         <div class="form-group">
@@ -580,29 +934,78 @@
         <video id="video" controls playsinline></video>
         <div class="hero-overlay">
           <div class="hero-title" id="now-playing">Select a channel to start watching</div>
-          <div class="hero-subtitle">Browse thousands of live channels from around the world</div>
+          <div class="hero-subtitle">
+            Browse thousands of live channels or switch to on-demand for movies/TV/anime. Favorites, resume, captions, and fallback mirrors are supported.
+          </div>
+          <div class="hero-actions compact-actions">
+            <button class="btn btn-secondary" id="favorite-btn">☆ Favorite</button>
+            <button class="btn btn-secondary" id="resume-btn">▶ Resume</button>
+            <button class="btn btn-secondary" id="cast-btn">📺 Cast</button>
+            <label class="sr-only" for="subtitle-url">Subtitle URL</label>
+            <input type="text" id="subtitle-url" class="mini-input" placeholder="Subtitle URL (srt/vtt)" />
+            <button class="btn btn-secondary" id="load-subtitle-btn">Load Subs</button>
+          </div>
         </div>
       </div>
     </section>
+    <div id="toast-container"></div>
 
-    <!-- Search and filters -->
-    <section class="controls-section">
-      <div class="controls">
-        <input type="text" id="search" placeholder="Search channels..." />
-        <select id="group">
-          <option value="">All Categories</option>
-        </select>
-      </div>
-    </section>
+    <!-- Live TV Content -->
+    <div class="content-view active" id="livetv-view">
+      <section class="controls-section">
+        <div class="controls">
+          <input type="text" id="search" placeholder="Search channels..." />
+          <select id="group">
+            <option value="">All Categories</option>
+          </select>
+          <label class="badge soft" style="cursor:pointer; display:flex; align-items:center; gap:6px;">
+            <input type="checkbox" id="hide-adult-toggle" />
+            Hide adult
+          </label>
+        </div>
+      </section>
 
-    <!-- Channel grid -->
-    <section class="content-section">
-      <div class="section-header">
-        <h2 class="section-title">Available Channels</h2>
-        <div class="channel-count" id="count">0 channels</div>
-      </div>
-      <div class="channels-grid" id="channels"></div>
-    </section>
+      <section class="content-section">
+        <div class="section-header">
+          <h2 class="section-title">Available Channels</h2>
+          <div class="channel-count" id="count">0 channels</div>
+        </div>
+        <div class="channels-grid" id="channels"></div>
+      </section>
+    </div>
+
+    <!-- On-Demand Content -->
+    <div class="content-view" id="vod-view">
+      <section class="controls-section">
+        <div class="vod-controls">
+          <input type="text" id="vod-query" placeholder="Search movies, shows, or anime..." />
+          <select id="vod-provider"></select>
+          <div class="vod-inline-field">
+            <input type="number" id="vod-episode" min="1" value="1" title="Episode (anime)" />
+          </div>
+          <div class="vod-inline-field">
+            <input type="text" id="vod-quality" placeholder="Quality (e.g., 1080)" />
+          </div>
+          <button class="btn btn-primary" id="vod-play">Play</button>
+        </div>
+        <div class="vod-inline">
+          <input type="text" id="vod-direct" placeholder="Direct link (m3u8/mp4)..." />
+          <button class="btn btn-secondary" id="vod-direct-play">Play Direct Link</button>
+        </div>
+        <div class="vod-hints">
+          <div class="form-hint">Built-in VidSrc resolver works in Docker. ani-cli is optional for anime power users.</div>
+          <div class="badge soft" id="vod-provider-hint">Waiting for providers...</div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <div class="section-header">
+          <h2 class="section-title" id="vod-heading">On-Demand Library</h2>
+          <div class="status-pill" id="vod-status">Ready</div>
+        </div>
+        <div class="vod-log" id="vod-log"></div>
+      </section>
+    </div>
     <script>
       const searchInput = document.getElementById("search");
       const groupSelect = document.getElementById("group");
@@ -611,10 +1014,66 @@
       const count = document.getElementById("count");
       const playlistInfo = document.getElementById("playlist-info");
       const video = document.getElementById("video");
+      const favoriteBtn = document.getElementById("favorite-btn");
+      const resumeBtn = document.getElementById("resume-btn");
+      const castBtn = document.getElementById("cast-btn");
+      const subtitleInput = document.getElementById("subtitle-url");
+      const loadSubtitleBtn = document.getElementById("load-subtitle-btn");
+      const toastContainer = document.getElementById("toast-container");
+      const hideAdultToggle = document.getElementById("hide-adult-toggle");
+      const parentPin = localStorage.getItem('parentPin') || '0000';
 
       let channels = [];
       let filtered = [];
-      let hls;
+      let hlsPlayer;
+      let lastPlayback = null;
+      let lastAlternatives = [];
+
+      const showToast = (message) => {
+        const el = document.createElement('div');
+        el.className = 'toast';
+        el.textContent = message;
+        toastContainer.appendChild(el);
+        setTimeout(() => {
+          el.classList.add('fade');
+          el.remove();
+        }, 3500);
+      };
+
+      const watchKey = (title) => `watch:${title}`;
+
+      const saveProgress = (title, url, currentTime) => {
+        localStorage.setItem(watchKey(title), JSON.stringify({ url, currentTime, ts: Date.now() }));
+      };
+
+      const loadProgress = (title) => {
+        const raw = localStorage.getItem(watchKey(title));
+        if (!raw) return null;
+        try {
+          return JSON.parse(raw);
+        } catch {
+          return null;
+        }
+      };
+
+      const toggleFavorite = (item) => {
+        const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        const exists = favorites.find((f) => f.id === item.id && f.type === item.type);
+        let updated;
+        if (exists) {
+          updated = favorites.filter((f) => !(f.id === item.id && f.type === item.type));
+          showToast('Removed from favorites');
+        } else {
+          updated = [...favorites, item];
+          showToast('Added to favorites');
+        }
+        localStorage.setItem('favorites', JSON.stringify(updated));
+      };
+
+      const isFavorite = (item) => {
+        const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        return favorites.some((f) => f.id === item.id && f.type === item.type);
+      };
 
       const formatCount = (n) => `${n} channel${n === 1 ? "" : "s"}`;
 
@@ -639,7 +1098,9 @@
         filtered = channels.filter((c) => {
           const matchesName = c.name.toLowerCase().includes(search);
           const matchesGroup = !group || c["group-title"] === group;
-          return matchesName && matchesGroup;
+          const isAdult = /adult|xxx|porn|18\+/i.test(`${c.name} ${c["group-title"] || ""}`);
+          const allowed = !hideAdultToggle.checked || !isAdult;
+          return matchesName && matchesGroup && allowed;
         });
 
         channelsList.innerHTML =
@@ -668,19 +1129,19 @@
         count.textContent = formatCount(filtered.length);
       };
 
-      const playChannel = (channel) => {
-        const url = channel.streamUrl || channel.url;
-        nowPlaying.textContent = channel.name;
-
-        // Scroll to top to show video
+      const startPlayback = (title, url, alternatives = []) => {
+        nowPlaying.textContent = title;
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        if (hls) {
-          hls.destroy();
+        if (hlsPlayer) {
+          hlsPlayer.destroy();
         }
 
+        lastPlayback = { title, url };
+        lastAlternatives = alternatives.filter((u) => u !== url);
+
         if (Hls.isSupported()) {
-          hls = new Hls({
+          hlsPlayer = new Hls({
             maxLoadingDelay: 4,
             maxBufferLength: 30,
             manifestLoadingTimeOut: 10000,
@@ -691,28 +1152,33 @@
             fragLoadingMaxRetry: 3
           });
 
-          hls.loadSource(url);
-          hls.attachMedia(video);
+          hlsPlayer.loadSource(url);
+          hlsPlayer.attachMedia(video);
 
-          hls.on(Hls.Events.ERROR, (event, data) => {
+          hlsPlayer.on(Hls.Events.ERROR, (event, data) => {
             if (data.fatal) {
               switch(data.type) {
                 case Hls.ErrorTypes.NETWORK_ERROR:
-                  console.error("Network error for channel:", channel.name);
-                  nowPlaying.textContent = `Error: ${channel.name} - Stream Unavailable`;
+                  console.error("Network error for stream:", title);
+                  nowPlaying.textContent = `Error: ${title} - Stream Unavailable`;
                   setTimeout(() => {
                     console.log("Attempting to recover from network error...");
-                    hls.startLoad();
+                    hlsPlayer.startLoad();
                   }, 3000);
                   break;
                 case Hls.ErrorTypes.MEDIA_ERROR:
                   console.error("Media error, attempting recovery...");
-                  hls.recoverMediaError();
+                  hlsPlayer.recoverMediaError();
                   break;
                 default:
                   console.error("Fatal error, cannot recover:", data);
-                  nowPlaying.textContent = `Error: ${channel.name} - Playback Failed`;
-                  hls.destroy();
+                  nowPlaying.textContent = `Error: ${title} - Playback Failed`;
+                  hlsPlayer.destroy();
+                  if (lastAlternatives.length > 0) {
+                    const next = lastAlternatives.shift();
+                    showToast('Trying fallback source...');
+                    startPlayback(title, next, lastAlternatives);
+                  }
                   break;
               }
             } else {
@@ -720,14 +1186,19 @@
             }
           });
 
-          hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          hlsPlayer.on(Hls.Events.MANIFEST_PARSED, () => {
             video.play();
           });
         } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
           video.src = url;
           video.play().catch(err => {
             console.error("Playback error:", err);
-            nowPlaying.textContent = `Error: ${channel.name} - Cannot Play`;
+            nowPlaying.textContent = `Error: ${title} - Cannot Play`;
+            if (lastAlternatives.length > 0) {
+              const next = lastAlternatives.shift();
+              showToast('Trying fallback source...');
+              startPlayback(title, next, lastAlternatives);
+            }
           });
         } else {
           alert("HLS playback is not supported in this browser.");
@@ -736,6 +1207,11 @@
         document
           .querySelectorAll(".channel-card")
           .forEach((el) => el.classList.remove("active"));
+      };
+
+      const playChannel = (channel) => {
+        const url = channel.streamUrl || channel.url;
+        startPlayback(channel.name, url);
       };
 
       const attachChannelHandlers = () => {
@@ -758,15 +1234,25 @@
         }
       });
 
-      const loadChannels = async (customUrl = null) => {
+      const loadChannels = async (customUrl = null, macAddress = null) => {
         playlistInfo.textContent = "Loading...";
         try {
-          const url = customUrl
-            ? `/api/channels?playlist=${encodeURIComponent(customUrl)}`
-            : "/api/channels";
+          let url;
+
+          if (macAddress) {
+            // MAC address takes priority
+            url = `/api/channels?mac=${encodeURIComponent(macAddress)}`;
+          } else if (customUrl) {
+            url = `/api/channels?playlist=${encodeURIComponent(customUrl)}`;
+          } else {
+            url = "/api/channels";
+          }
 
           const res = await fetch(url);
-          if (!res.ok) throw new Error("Failed to fetch channels");
+          if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.error || "Failed to fetch channels");
+          }
           const payload = await res.json();
           channels = payload.channels;
           renderGroups();
@@ -775,16 +1261,20 @@
           count.textContent = formatCount(channels.length);
 
           // Display shortened URL in badge
-          const urlObj = new URL(payload.playlistUrl);
-          const shortUrl = urlObj.hostname + (urlObj.pathname.length > 20
-            ? '...' + urlObj.pathname.slice(-15)
-            : urlObj.pathname);
-          playlistInfo.textContent = shortUrl;
+          if (macAddress) {
+            playlistInfo.textContent = `sm4k.688.org (${macAddress})`;
+          } else {
+            const urlObj = new URL(payload.playlistUrl);
+            const shortUrl = urlObj.hostname + (urlObj.pathname.length > 20
+              ? '...' + urlObj.pathname.slice(-15)
+              : urlObj.pathname);
+            playlistInfo.textContent = shortUrl;
+          }
         } catch (err) {
           console.error(err);
           playlistInfo.textContent = "Error";
           channelsList.innerHTML =
-            '<div class="empty">Could not load channels. Please check the playlist URL in settings.</div>';
+            `<div class="empty">Could not load channels. ${err.message}</div>`;
         }
       };
 
@@ -796,6 +1286,19 @@
         renderChannels();
         attachChannelHandlers();
       });
+      hideAdultToggle.addEventListener("change", () => {
+        if (!hideAdultToggle.checked) {
+          const inputPin = prompt('Enter PIN to show adult content (default 0000):');
+          if (inputPin !== parentPin) {
+            hideAdultToggle.checked = true;
+            showToast('Incorrect PIN');
+            return;
+          }
+        }
+        localStorage.setItem('hideAdult', hideAdultToggle.checked ? '1' : '0');
+        renderChannels();
+        attachChannelHandlers();
+      });
 
       // Settings modal functionality
       const settingsModal = document.getElementById('settings-modal');
@@ -804,11 +1307,17 @@
       const cancelBtn = document.getElementById('cancel-btn');
       const applyBtn = document.getElementById('apply-btn');
       const playlistUrlInput = document.getElementById('playlist-url-input');
+      const macAddressInput = document.getElementById('mac-address-input');
 
-      // Load saved playlist URL from localStorage
+      // Load saved settings from localStorage
       const savedPlaylistUrl = localStorage.getItem('customPlaylistUrl');
+      const savedMacAddress = localStorage.getItem('macAddress');
+
       if (savedPlaylistUrl) {
         playlistUrlInput.value = savedPlaylistUrl;
+      }
+      if (savedMacAddress) {
+        macAddressInput.value = savedMacAddress;
       }
 
       // Open modal
@@ -842,8 +1351,24 @@
       // Apply playlist URL
       applyBtn.addEventListener('click', async () => {
         const customUrl = playlistUrlInput.value.trim();
+        const macAddress = macAddressInput.value.trim();
 
-        if (customUrl) {
+        // Validate MAC address format if provided
+        if (macAddress) {
+          const macRegex = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$|^([0-9A-Fa-f]{12})$/;
+          if (!macRegex.test(macAddress)) {
+            alert('Invalid MAC address format. Use format: 00:1A:2B:3C:4D:5E or 001A2B3C4D5E');
+            return;
+          }
+
+          // Save MAC address to localStorage
+          localStorage.setItem('macAddress', macAddress);
+          localStorage.removeItem('customPlaylistUrl');
+
+          // Reload channels with MAC address
+          closeModal();
+          await loadChannels(null, macAddress);
+        } else if (customUrl) {
           // Validate URL format
           try {
             new URL(customUrl);
@@ -854,24 +1379,272 @@
 
           // Save to localStorage
           localStorage.setItem('customPlaylistUrl', customUrl);
+          localStorage.removeItem('macAddress');
 
           // Reload channels with custom URL
           closeModal();
-          await loadChannels(customUrl);
+          await loadChannels(customUrl, null);
         } else {
-          // Clear custom URL and use default
+          // Clear all custom settings and use default
           localStorage.removeItem('customPlaylistUrl');
+          localStorage.removeItem('macAddress');
           closeModal();
           await loadChannels();
         }
       });
 
       // Load channels on startup
-      if (savedPlaylistUrl) {
-        loadChannels(savedPlaylistUrl);
+      if (savedMacAddress) {
+        loadChannels(null, savedMacAddress);
+      } else if (savedPlaylistUrl) {
+        loadChannels(savedPlaylistUrl, null);
       } else {
         loadChannels();
       }
+
+      hideAdultToggle.checked = localStorage.getItem('hideAdult') === '1';
+
+      // ====== On-Demand (Movies/TV/Anime) ======
+
+      const navTabs = document.querySelectorAll('.nav-tab');
+      const liveView = document.getElementById('livetv-view');
+      const vodView = document.getElementById('vod-view');
+      const vodHeading = document.getElementById('vod-heading');
+      const vodStatus = document.getElementById('vod-status');
+      const vodLog = document.getElementById('vod-log');
+      const vodQueryInput = document.getElementById('vod-query');
+      const vodProviderSelect = document.getElementById('vod-provider');
+      const vodEpisodeInput = document.getElementById('vod-episode');
+      const vodQualityInput = document.getElementById('vod-quality');
+      const vodDirectInput = document.getElementById('vod-direct');
+      const vodProviderHint = document.getElementById('vod-provider-hint');
+      let currentTab = 'livetv';
+      let availableProviders = [];
+
+      const setVodStatus = (text, tone = 'neutral') => {
+        vodStatus.textContent = text;
+        vodStatus.dataset.tone = tone;
+      };
+
+      const setTab = (tabName) => {
+        currentTab = tabName;
+        navTabs.forEach((t) => t.classList.toggle('active', t.dataset.tab === tabName));
+
+        const episodeField = vodEpisodeInput.closest('.vod-inline-field');
+
+        if (tabName === 'livetv') {
+          liveView.classList.add('active');
+          vodView.classList.remove('active');
+          if (episodeField) {
+            episodeField.style.display = 'none';
+          }
+          return;
+        }
+
+        liveView.classList.remove('active');
+        vodView.classList.add('active');
+
+        const titles = {
+          movies: 'Movies',
+          tvshows: 'TV Shows',
+          anime: 'Anime',
+        };
+
+        vodHeading.textContent = `${titles[tabName] || 'On-Demand'} Library`;
+        vodQueryInput.placeholder = `Search ${titles[tabName] || 'on-demand'}...`;
+
+        if (episodeField) {
+          episodeField.style.display = tabName === 'anime' ? 'block' : 'none';
+        }
+
+        // Default provider selection based on tab
+        const providerIds = availableProviders.map((p) => p.id);
+        if (tabName === 'anime' && providerIds.includes('ani-cli')) {
+          vodProviderSelect.value = 'ani-cli';
+        } else if (providerIds.includes('vidsrc')) {
+          vodProviderSelect.value = 'vidsrc';
+        } else if (availableProviders[0]) {
+          vodProviderSelect.value = availableProviders[0].id;
+        }
+      };
+
+      navTabs.forEach((tab) =>
+        tab.addEventListener('click', () => setTab(tab.dataset.tab))
+      );
+
+      const appendLog = (message) => {
+        const entry = document.createElement('div');
+        entry.className = 'vod-log-entry';
+        entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+        vodLog.prepend(entry);
+      };
+
+      const loadVodProviders = async () => {
+        try {
+          const res = await fetch('/api/vod/providers');
+          const data = await res.json();
+          availableProviders = (data.providers || []).filter((p) => p.available);
+
+          if (availableProviders.length === 0) {
+            vodProviderSelect.innerHTML = '<option value="">No providers available</option>';
+            vodProviderHint.textContent = 'Built-in resolver unavailable - check backend logs';
+            setVodStatus('No on-demand providers found', 'error');
+            document.getElementById('vod-play').disabled = true;
+            return;
+          }
+
+          vodProviderSelect.innerHTML = availableProviders
+            .map((p) => `<option value="${p.id}">${p.label}</option>`)
+            .join('');
+          vodProviderSelect.value = availableProviders[0].id;
+          vodProviderHint.textContent = `Available: ${availableProviders
+            .map((p) => p.label)
+            .join(', ')}`;
+          setVodStatus('Providers ready', 'info');
+          document.getElementById('vod-play').disabled = false;
+        } catch (error) {
+          console.error('Failed to load providers', error);
+          vodProviderSelect.innerHTML = '<option value="">Provider lookup failed</option>';
+          setVodStatus('Provider lookup failed', 'error');
+          document.getElementById('vod-play').disabled = true;
+        }
+      };
+
+      const startVodPlayback = async () => {
+        const query = vodQueryInput.value.trim();
+        if (!query) {
+          setVodStatus('Enter a title to search', 'error');
+          return;
+        }
+
+        const provider =
+          vodProviderSelect.value ||
+          (currentTab === 'anime'
+            ? availableProviders.find((p) => p.id === 'ani-cli')?.id
+            : availableProviders.find((p) => p.id === 'vidsrc')?.id) ||
+          availableProviders[0]?.id ||
+          'vidsrc';
+        const providerAvailable = availableProviders.find((p) => p.id === provider);
+        if (!providerAvailable) {
+          setVodStatus('No on-demand provider available. Try the direct link field.', 'error');
+          appendLog('Provider unavailable locally');
+          return;
+        }
+        vodProviderSelect.value = provider;
+        const episode = vodEpisodeInput.value || '1';
+        const quality = vodQualityInput.value.trim();
+
+        const params = new URLSearchParams({
+          provider,
+          query,
+          type: currentTab === 'livetv' ? 'movies' : currentTab,
+        });
+        if (currentTab === 'anime') {
+          params.append('episode', episode);
+        }
+        if (quality) {
+          params.append('quality', quality);
+        }
+
+        setVodStatus('Resolving stream...', 'info');
+
+        try {
+          const res = await fetch(`/api/vod/play?${params.toString()}`);
+          const data = await res.json();
+          if (!res.ok) {
+            throw new Error(data.error || 'Failed to resolve stream');
+          }
+
+          const title = data.title || query;
+          const url = data.streamUrl || data.url;
+          const alternatives = data.alternatives || [];
+
+          startPlayback(`${title} (${provider})`, url, alternatives);
+          setVodStatus(`Streaming via ${provider}`);
+          appendLog(`Playing ${title} via ${provider}`);
+        } catch (error) {
+          console.error('VOD error', error);
+          setVodStatus(error.message, 'error');
+          appendLog(`Error: ${error.message}`);
+        }
+      };
+
+      const playDirect = () => {
+        const url = vodDirectInput.value.trim();
+        if (!url) return;
+        const proxied = `/api/stream?url=${encodeURIComponent(url)}`;
+        startPlayback('Direct link', proxied);
+        setVodStatus('Playing direct link');
+        appendLog(`Direct link: ${url}`);
+      };
+
+      document.getElementById('vod-play').addEventListener('click', startVodPlayback);
+      document.getElementById('vod-direct-play').addEventListener('click', playDirect);
+      vodQueryInput.addEventListener('keydown', (e) => e.key === 'Enter' && startVodPlayback());
+      vodDirectInput.addEventListener('keydown', (e) => e.key === 'Enter' && playDirect());
+
+      loadVodProviders();
+      setTab('livetv');
+
+      video.addEventListener('timeupdate', () => {
+        if (!lastPlayback || !video.duration || isNaN(video.currentTime)) return;
+        saveProgress(lastPlayback.title, lastPlayback.url, video.currentTime);
+      });
+
+      resumeBtn.addEventListener('click', () => {
+        if (!lastPlayback) {
+          showToast('No recent item to resume');
+          return;
+        }
+        const saved = loadProgress(lastPlayback.title);
+        if (saved && saved.url) {
+          startPlayback(lastPlayback.title, saved.url, lastAlternatives);
+          video.currentTime = saved.currentTime || 0;
+          showToast(`Resumed ${lastPlayback.title}`);
+        } else {
+          showToast('No saved position yet');
+        }
+      });
+
+      favoriteBtn.addEventListener('click', () => {
+        if (!lastPlayback) {
+          showToast('Play something first to favorite it');
+          return;
+        }
+        toggleFavorite({ id: lastPlayback.url, type: 'stream', title: lastPlayback.title });
+      });
+
+      loadSubtitleBtn.addEventListener('click', () => {
+        const url = subtitleInput.value.trim();
+        if (!url) {
+          showToast('Enter a subtitle URL');
+          return;
+        }
+        const track = document.createElement('track');
+        track.kind = 'subtitles';
+        track.label = 'Custom';
+        track.src = url;
+        track.default = true;
+        video.appendChild(track);
+        showToast('Subtitle track added');
+      });
+
+      castBtn.addEventListener('click', () => {
+        showToast('Casting is not wired yet. Use your device cast/AirPlay with the current URL.');
+      });
+
+      // Keyboard controls
+      window.addEventListener('keydown', (e) => {
+        if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+        if (e.code === 'Space') {
+          e.preventDefault();
+          if (video.paused) video.play(); else video.pause();
+        } else if (e.code === 'ArrowRight') {
+          video.currentTime = Math.min(video.duration || 0, video.currentTime + 10);
+        } else if (e.code === 'ArrowLeft') {
+          video.currentTime = Math.max(0, video.currentTime - 10);
+        }
+      });
     </script>
   </body>
 </html>
